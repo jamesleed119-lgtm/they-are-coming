@@ -206,7 +206,22 @@
         function getUnityConfig() {
             return Promise.resolve().then(async () => {
                 const blobUrl = await fetchAndMergeWasm();
-                return { ...config, codeUrl: blobUrl };
+                const maxDevicePixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+
+                return {
+                    ...config,
+                    codeUrl: blobUrl,
+                    devicePixelRatio: maxDevicePixelRatio,
+                    webglContextAttributes: {
+                        alpha: false,
+                        antialias: false,
+                        depth: true,
+                        stencil: false,
+                        premultipliedAlpha: false,
+                        preserveDrawingBuffer: false,
+                        powerPreference: 'low-power'
+                    }
+                };
             });
         }
 
